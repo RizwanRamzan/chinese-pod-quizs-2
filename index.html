@@ -1,0 +1,890 @@
+<!-- Start of Selection -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css?family=Inter:400,500,600,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1976D2;
+      --primary-dark: #125ea7;
+      --accent: #43E77D;
+      --bg: #f9fafc;
+      --bg-card: #fff;
+      --shadow: 0 2px 16px rgba(24, 61, 124, 0.08), 0 1.5px 8px rgba(70,83,123,0.07);
+      --rounded: 16px;
+      --rounded-btn: 999px;
+      --gray: #9fa8b2;
+      --border: #e4eaf1;
+      --danger: #e16161;
+      --warning: #ffb53e;
+      --success: #3ec974;
+      --text: #202b3a;
+      --text-muted: #959ea6;
+      --transition: all .18s cubic-bezier(.4,0,.2,1);
+      --tab-shadow: 0 2px 8px #1976d214;
+      --mob-width: 340px;
+    }
+    html, body {
+      font-family: 'Inter', Arial, sans-serif;
+      font-size: 17px;
+      background: var(--bg);
+      min-height: 100vh;
+      color: var(--text);
+      margin: 0;
+    }
+    .app {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 26px 8px 40px 8px;
+    }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      border-bottom: 2.5px solid var(--border);
+      background: var(--bg);
+      position: sticky;
+      top: 0; z-index: 12;
+    }
+    .tab {
+      background: none;
+      border: none;
+      border-radius: var(--rounded-btn) var(--rounded-btn) 0 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--gray);
+      padding: 12px 30px 11px 30px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      outline: none;
+    }
+    .tab.active,.tab:focus-visible,.tab:hover {
+      color: var(--primary);
+      background: var(--bg-card);
+      box-shadow: var(--tab-shadow);
+      border-bottom: 2.5px solid var(--primary);
+      z-index: 1;
+    }
+    .screens {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      justify-content: center;
+    }
+    .phone, .quiz-card {
+      background: var(--bg-card);
+      border-radius: var(--rounded);
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: var(--mob-width);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-width: 250px;
+      border: 1.2px solid var(--border);
+      transition: box-shadow .18s;
+    }
+    .phone:hover, .quiz-card:hover { box-shadow: 0 10px 36px var(--primary, #1976d2, .19);}
+    .phone-portrait { min-height: 420px;}
+    .status-bar {
+      background: var(--bg);
+      color: var(--gray);
+      padding: 7px 17px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      min-height: 32px;
+      font-weight: 500;
+    }
+    .status-bar span {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .quiz-header {
+      padding: 12px 19px;
+      display: flex; align-items: center; gap: 13px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+    .back-btn {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      border: none;
+      background: var(--bg);
+      color: var(--primary);
+      font-size: 17px;
+      cursor: pointer;
+      transition: background .15s, color .13s;
+      box-shadow: 0 1.2px 5px #cbe3fb33;
+      outline: none;
+      border: 1px solid transparent;
+    }
+    .back-btn:hover, .back-btn:focus-visible {
+      background: #e9f5ff;
+      color: var(--primary-dark);
+    }
+    .progress-bar-wrap {
+      flex: 1;
+      height: 8px;
+      background: #ecf2fa;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 0 16px;
+      min-width: 50px;
+      border: 1.2px solid var(--border);
+      box-shadow: 0 1px 4px #dfecf153;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #73D0FF 30%, #43E77D 95%);
+      transition: width .29s cubic-bezier(.7,0,.27,1);
+    }
+    .q-counter {
+      font-size: 14px;
+      color: var(--primary);
+      font-weight: 700;
+      background: #e3f0ff;
+      padding: 3px 13px;
+      border-radius: var(--rounded-btn);
+      letter-spacing: .01em;
+    }
+    .lvl-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #e8f0ff;
+      color: var(--primary-dark);
+      font-weight: 600;
+      border-radius: var(--rounded-btn);
+      font-size: 13px;
+      padding: 4px 14px;
+      margin-bottom: 3px;
+    }
+    .lvl-elem {background: #ecffe6; color: #3ec974;}
+    .lvl-inter {background: #fff7e7; color: #e9a610;}
+    .q-area {
+      padding: 25px 16px 13px;
+      background: var(--bg-card);
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .q-type-tag {
+      display: inline-block;
+      background: #f3f7fd;
+      color: var(--primary-dark);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      border-radius: var(--rounded-btn);
+      padding: 4px 14px;
+      letter-spacing: .08em;
+      margin: 10px 0 8px 0;
+    }
+    .big-char {
+      font-size: 3.2rem;
+      line-height: 1.13;
+      color: var(--primary-dark);
+      font-weight: 800;
+      margin: 0 0 5px 0;
+      letter-spacing: 0.11em;
+      text-shadow: 0 2px 10px #1976d242;
+    }
+    .pinyin {
+      font-size: 14px;
+      color: #0abbbb;
+      text-align: center;
+      margin-top: -6px;
+      font-weight: 600;
+    }
+    .q-text {
+      font-size: 1rem;
+      color: var(--gray);
+      font-weight: 550;
+      margin-top: 11px;
+      line-height: 1.7;
+    }
+    .opts-v { display: flex; flex-direction: column; gap: 9px; padding: 8px 16px 14px;}
+    .opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px 8px 10px 8px;}
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      background: #f3f8fc;
+      border-radius: var(--rounded-btn);
+      border: 1.3px solid var(--border);
+      padding: 12px 15px;
+      font-weight: 500;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 .5px 3px #1976d216;
+      transition: var(--transition);
+      user-select: none;
+    }
+    .opt:hover, .opt:focus-visible { border-color: var(--primary);}
+    .opt.correct { background: #eafff0 !important; border-color: var(--success)!important; color: var(--success);}
+    .opt.wrong { background: #ffeaea!important; border-color: var(--danger)!important; color: var(--danger);}
+    .opt-key {
+      width: 32px; height: 32px;
+      border-radius: 7px;
+      background: #e9f3fd;
+      color: var(--primary-dark);
+      font-size: 16px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      margin-right: 2px;
+      border: 1.2px solid #a9d5ff;
+    }
+    .opt.correct .opt-key {background: var(--success); color:#fff;}
+    .opt.wrong .opt-key {background: var(--danger); color:#fff;}
+    .opt-text { font-size: 16px; color: var(--text); font-weight:600;}
+    .opt-sub { font-size: 12px; color: var(--primary-dark);}
+    .opt i.fa-check {color:var(--success); font-size:16px; margin-left:6px;}
+    .audio-pill {
+      display: flex; align-items: center; gap: 15px;
+      background: #eafdff;
+      border: 2px solid #bbecfc44;
+      border-radius: var(--rounded-btn);
+      padding: 11px 22px;
+      color: var(--primary-dark); font-size: 16px;
+      font-weight: 500;
+      transition: background .13s, border .15s;
+      cursor: pointer;
+      box-shadow: 0 3px 18px #1976d212;
+      user-select: none;
+    }
+    .audio-pill:hover, .audio-pill:focus-visible { background: #d0f0fd; border-color: var(--primary);}
+    .audio-pill i { font-size: 21px;}
+    .audio-pill span { font-size: 15px;}
+
+    .wave {display:flex;align-items:center;gap:3px;height:20px;}
+    .wave span {
+      display: block;
+      width: 4px; background: var(--primary);
+      opacity: 0.85;
+      height: 10px; border-radius:2px;
+      animation: wave-pulse 1.13s infinite linear;
+    }
+    .wave span:nth-child(1){height:10px;animation-delay:.09s}
+    .wave span:nth-child(2){height:14px;animation-delay:.15s}
+    .wave span:nth-child(3){height:20px;animation-delay:.24s}
+    .wave span:nth-child(4){height:14px;animation-delay:.32s}
+    .wave span:nth-child(5){height:10px;animation-delay:.4s}
+    @keyframes wave-pulse { 0%,100%{opacity:.5} 30%{opacity:1} 60%{opacity:.8}}
+    .sentence-wrap {
+      background: #f3f8fc;
+      border-radius: var(--rounded);
+      box-shadow: 0 1px 7px #eaf3fa13;
+      padding: 0 13px 12px 13px;
+    }
+    .sentence { font-size:17px;color: var(--text);font-weight:600;}
+    .blank {
+      min-width: 55px; height: 24px;
+      border-bottom: 2px solid var(--primary);
+      color: var(--primary-dark);
+      background: #edf6ff;
+      border-radius: 5px 5px 0 0;
+      cursor: pointer;
+      transition: background .14s;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 700;
+      margin: 0 6px;
+      display: inline-block;
+    }
+    .blank.filled { background:#eafff0;color:var(--success); border-bottom-color:var(--success);}
+    .blank:hover {background:#d2eafd;border-bottom-color:var(--primary-dark);}
+    .word-bank {display:flex;gap:8px;flex-wrap:wrap;padding:8px 10px 17px 10px;}
+    .word-chip {
+      background: #f3f8fc;
+      border: 1.2px solid #a9d5ff88;
+      border-radius: var(--rounded-btn);
+      padding: 8px 15px;
+      min-width: 85px;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 550;
+      transition: var(--transition);
+      cursor: pointer;
+      user-select: none;
+    }
+    .word-chip:hover:not(.used), .word-chip:focus-visible:not(.used) {
+      background: #e1f2ff;
+      color: var(--primary-dark);
+    }
+    .word-chip.used {opacity:.45; background:#e3e8ec;color:#989fae; cursor:not-allowed; text-decoration:line-through;}
+    .opt[draggable="true"] {cursor:grab;}
+    .match-wrap {
+      background: #f6fafd;
+      border-radius: var(--rounded);
+      padding: 10px 12px 18px;
+      box-shadow: 0 2px 10px #aed8fe13;
+      border: 1px solid #e9f3fc;
+    }
+    .match-cols {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    .match-item {
+      border: 1px solid #dde6f2;
+      padding: 12px 11px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      color: var(--primary-dark);
+      background: #f3f8fc;
+      font-weight: 600;
+      transition: background .14s, border .13s;
+    }
+    .match-item.sel-left{background:#eafff0;border-color:#43e77d;color:var(--success);}
+    .match-item.matched{background:#d7fff1;border-color:#43e77d;color:var(--success);}
+    .result-banner {
+      color: var(--success);
+      background: #eafff0;
+      padding: 10px 13px;
+      border-radius: 9px;
+      border: 1.2px solid #b4ead6;
+      font-size: 15px;
+      font-weight: 700;
+      margin: 16px 10px 8px 10px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .result-banner.wrong-b {background:#ffeaea; color:var(--danger); border:1.2px solid #e16161;}
+    .game-bar {
+      display: flex; align-items: center; gap: 17px;
+      background: #f6fafd;
+      border-top: 1.2px solid #e3eefc;
+      border-radius: 0 0 var(--rounded) var(--rounded);
+      font-weight: 600;
+      min-height: 39px;
+      margin-top: 0;
+      padding: 10px 11px;
+    }
+    .streak {
+      display: flex; align-items: center; gap:7px;
+      font-size:15px; font-weight:600;
+      color: var(--warning);
+      background: #fff9e6;
+      padding: 4px 11px;
+      border-radius: var(--rounded-btn);
+    }
+    .xp-pill {
+      display: flex; align-items: center; gap: 6px;
+      background:#eafff2;
+      color: var(--accent); font-size: 14px;
+      font-weight: 600;
+      border-radius: var(--rounded-btn);
+      padding: 4px 11px;
+    }
+    .lives { display: flex; gap: 5px; margin-left:auto;}
+    .heart { font-size: 16px; color: #e16161;}
+    .screen-label {
+      font-size: 13px;
+      color: var(--gray);
+      text-align: center;
+      margin: 13px 0 5px 0;
+      background: #f6fafd;
+      border-radius: 8px;
+      font-weight: 600;
+      padding: 5px 0;
+    }
+    .level-grid {
+      display: flex; flex-direction: column; gap: 12px;
+      padding: 15px 10px;
+    }
+    .level-card {
+      display: flex; align-items: center; gap: 12px;
+      background: #f6fafd;
+      border-radius: var(--rounded);
+      border: 1.2px solid #bbecfc;
+      padding: 11px 15px;
+      cursor: pointer;
+      transition: background .13s, border .12s, box-shadow .13s;
+      box-shadow: 0 1.5px 7px #b8e1fa19;
+    }
+    .level-card:hover, .level-card:focus-visible {background:#e9f7ff; box-shadow: 0 2.5px 10px #5fd0ed18;}
+    .level-dot {
+      width: 37px; height: 37px; border-radius:50%;
+      background: #e9f7ff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; font-weight: 500;
+    }
+    .level-count {font-size:13px;color:var(--primary-dark);font-weight:600;}
+    /* Responsive */
+    @media (max-width: 920px) {
+      .app { max-width:98vw;}
+      .screens { flex-direction: column;}
+    }
+    @media (max-width: 500px) {
+      .phone, .quiz-card, .phone-portrait {max-width:98vw;}
+      .tabs{gap:2px;}
+      .tab{padding:10px 9px;}
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+<!-- For demo purpose; tabs could be dynamic -->
+<div class="tabs" id="tabBar">
+  <button class="tab active" onclick="showTab(0)">Quiz</button>
+  <button class="tab" onclick="showTab(1)">Landscape</button>
+  <button class="tab" onclick="showTab(2)">Blank / DnD</button>
+  <button class="tab" onclick="showTab(3)">Audio</button>
+  <button class="tab" onclick="showTab(4)">Match</button>
+  <button class="tab" onclick="showTab(5)">Levels</button>
+</div>
+  <!-- TAB 0: Portrait MCQ -->
+  <div class="tab-content" id="tc0">
+    <div class="screens">
+      <div>
+        <div class="phone phone-portrait">
+          <div class="status-bar">
+            <span><i class="fa-regular fa-clock"></i>&nbsp;09:41</span>
+            <span><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i><i class="fa-regular fa-battery-three-quarters"></i></span>
+          </div>
+          <div class="quiz-header">
+            <button class="back-btn"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="progress-bar-wrap"><div class="progress-fill" id="pf0" style="width:41%"></div></div>
+            <span class="q-counter">2 / 5</span>
+          </div>
+          <div class="q-area">
+            <div style="display:flex;align-items:center; gap: 8px; justify-content:center;">
+              <span class="lvl-badge"><i class="fa-solid fa-circle" style="font-size:8px"></i> Newbie</span>
+              <span class="lvl-badge lvl-elem">HSK 1</span>
+            </div>
+            <div class="q-type-tag">Multiple Choice</div>
+            <div class="big-char">爱</div>
+            <div class="pinyin">ài</div>
+            <div class="q-text">What is the correct English translation?</div>
+          </div>
+          <div class="opts-v" id="opts0">
+            <div class="opt" tabindex="0" onclick="pickOpt(this,'wrong','opts0')"><span class="opt-key">A</span><div><div class="opt-text">Eat — کھانا</div></div></div>
+            <div class="opt" tabindex="0" onclick="pickOpt(this,'correct','opts0')"><span class="opt-key">B</span><div><div class="opt-text">Love — محبت</div><div class="opt-sub">Woh apni family se bahut <b>ài</b> karta hai</div></div></div>
+            <div class="opt" tabindex="0" onclick="pickOpt(this,'wrong','opts0')"><span class="opt-key">C</span><div><div class="opt-text">Big — بڑا</div></div></div>
+            <div class="opt" tabindex="0" onclick="pickOpt(this,'wrong','opts0')"><span class="opt-key">D</span><div><div class="opt-text">Water — پانی</div></div></div>
+          </div>
+          <div class="game-bar">
+            <div class="streak"><i class="fa-solid fa-fire-flame-curved"></i> 7-day streak</div>
+            <div class="xp-pill"><i class="fa-solid fa-bolt"></i> 240 XP</div>
+            <div class="lives">
+              <i class="fa-solid fa-heart heart"></i>
+              <i class="fa-solid fa-heart heart"></i>
+              <i class="fa-solid fa-heart heart"></i>
+            </div>
+          </div>
+        </div>
+        <div class="screen-label">Mobile · Light · Multiple Choice</div>
+      </div>
+
+      <div>
+        <div class="phone phone-portrait">
+          <div class="status-bar"><span><i class="fa-regular fa-clock"></i>&nbsp;09:41</span>
+            <span><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i></span>
+          </div>
+          <div class="quiz-header">
+            <button class="back-btn"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="progress-bar-wrap"><div class="progress-fill" style="width:61%"></div></div>
+            <span class="q-counter">3 / 5</span>
+          </div>
+          <div class="q-area">
+            <div class="q-type-tag">Multiple Choice</div>
+            <div class="big-char">书</div>
+            <div class="pinyin">shū</div>
+            <div class="q-text">What does this character mean?</div>
+          </div>
+          <div class="opts-v">
+            <div class="opt wrong"><span class="opt-key">A</span><div class="opt-text" style="color:var(--danger)">Person — شخص</div></div>
+            <div class="opt correct"><span class="opt-key">B</span>
+              <div><div class="opt-text" style="color:var(--success)">Book — کتاب <i class="fa-solid fa-check"></i></div>
+              <div class="opt-sub">This was the correct answer!</div></div>
+            </div>
+            <div class="opt" style="opacity:.3;pointer-events:none"><span class="opt-key">C</span><div class="opt-text">Mountain — پہاڑ</div></div>
+            <div class="opt" style="opacity:.3;pointer-events:none"><span class="opt-key">D</span><div class="opt-text">Sun — سورج</div></div>
+          </div>
+          <div class="result-banner wrong-b"><i class="fa-solid fa-xmark"></i> Incorrect! Correct answer: <span style="font-weight:600">B</span> (Book)</div>
+          <div class="game-bar">
+            <div class="streak"><i class="fa-solid fa-fire-flame-curved"></i> 7-day streak</div>
+            <div class="xp-pill"><i class="fa-solid fa-bolt"></i> 240 XP</div>
+            <div class="lives"><i class="fa-solid fa-heart heart"></i><i class="fa-solid fa-heart heart"></i></div>
+          </div>
+        </div>
+        <div class="screen-label">Feedback: Answer Visual · Light UI</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content hidden" id="tc1">
+    <div class="screens">
+      <div style="width:100%">
+        <div class="phone" style="max-width:900px;">
+          <div class="status-bar">
+            <span><i class="fa-regular fa-clock"></i> 09:41 · Landscape</span>
+            <span><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i></span>
+          </div>
+          <div style="display:flex;gap:0;">
+            <div style="flex:1; border-right:1px solid #e3eefc; padding:25px 15px;">
+              <div style="display:flex;align-items:center; gap:9px; margin-bottom:12px;">
+                <span class="lvl-badge lvl-inter"><i class="fa-solid fa-circle" style="font-size:8px"></i> Intermediate</span>
+                <span class="q-counter">4 / 8</span>
+              </div>
+              <div class="q-type-tag">Listening</div>
+              <div class="q-text" style="font-size:1.13rem;">Listen to the audio and select the correct tone</div>
+              <div style="margin-top:20px;">
+                <div class="audio-pill" tabindex="0"><i class="fa-solid fa-play"></i>
+                  <div class="wave"><span></span><span></span><span></span><span></span><span></span></div>
+                  <span>mā / má / mǎ / mà</span>
+                </div>
+              </div>
+              <div style="margin-top:14px;padding:10px 12px;background:#f6fafd;border-radius:1rem;">
+                <div style="font-size:12px;color:#9fa8b2;margin-bottom:3px">Tone guide</div>
+                <svg width="100%" height="54" viewBox="0 0 230 50">
+                  <line x1="10" y1="40" x2="40" y2="10" stroke="#43E77D" stroke-width="2" />
+                  <line x1="53" y1="10" x2="98" y2="10" stroke="#e9a610" stroke-width="2" />
+                  <line x1="109" y1="28" x2="118" y2="40" stroke="#1976D2" stroke-width="2" />
+                  <line x1="118" y1="40" x2="165" y2="15" stroke="#1976D2" stroke-width="2" />
+                  <line x1="180" y1="16" x2="215" y2="38" stroke="#e16161" stroke-width="2" />
+                  <text x="25" y="48" font-size="11" fill="#959ea6">1st</text>
+                  <text x="77" y="48" font-size="11" fill="#959ea6">2nd</text>
+                  <text x="135" y="48" font-size="11" fill="#959ea6">3rd</text>
+                  <text x="195" y="48" font-size="11" fill="#959ea6">4th</text>
+                </svg>
+              </div>
+              <div class="progress-bar-wrap" style="height:5px;">
+                <div class="progress-fill" style="width:53%;background:linear-gradient(90deg,#e9a610 50%,#43E77D 100%);"></div>
+              </div>
+            </div>
+            <div style="flex:1; padding:25px 12px;">
+              <div class="opts-grid">
+                <div class="opt" tabindex="0" onclick="this.classList.toggle('correct')"><span class="opt-key">A</span><div><div class="opt-text" style="font-size:20px">妈</div><div class="opt-sub">mā — 1st tone</div></div></div>
+                <div class="opt correct" tabindex="0"><span class="opt-key">B</span><div><div class="opt-text" style="font-size:20px">马</div><div class="opt-sub">mǎ — 3rd tone <i class="fa-solid fa-check"></i></div></div></div>
+                <div class="opt" tabindex="0" onclick="this.classList.toggle('wrong')"><span class="opt-key">C</span><div><div class="opt-text" style="font-size:20px">骂</div><div class="opt-sub">mà — 4th tone</div></div></div>
+                <div class="opt" tabindex="0"><span class="opt-key">D</span><div><div class="opt-text" style="font-size:20px">麻</div><div class="opt-sub">má — 2nd tone</div></div></div>
+              </div>
+              <div class="game-bar">
+                <div class="streak"><i class="fa-solid fa-fire-flame-curved"></i> 12-day streak</div>
+                <div class="xp-pill"><i class="fa-solid fa-bolt"></i> 580 XP</div>
+                <div class="lives"><i class="fa-solid fa-heart heart"></i><i class="fa-solid fa-heart heart"></i><i class="fa-solid fa-heart heart"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-label">Landscape · Light UI</div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content hidden" id="tc2">
+    <div class="screens">
+      <div>
+        <div class="phone phone-portrait">
+          <div class="status-bar"><span><i class="fa-regular fa-clock"></i> 09:41</span><span><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i></span></div>
+          <div class="quiz-header">
+            <button class="back-btn"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="progress-bar-wrap"><div class="progress-fill" style="width:65%"></div></div>
+            <span class="q-counter">3 / 5</span>
+          </div>
+          <div class="q-area">
+            <span class="lvl-badge lvl-inter"><i class="fa-solid fa-circle" style="font-size:8px"></i> Intermediate</span>
+            <div class="q-type-tag">Fill in the Blank</div>
+            <div class="q-text">Tap the correct word into the blank:</div>
+          </div>
+          <div class="sentence-wrap">
+            <div class="sentence">
+              Wǒ <span class="blank filled" id="bl1" onclick="clearBlank('bl1','chip-xi')">喜欢</span> chī <span class="blank" id="bl2" onclick="">_____</span>.
+            </div>
+            <div style="font-size:13px;color:var(--gray);margin-top:8px">I like to eat <b>food</b>.</div>
+          </div>
+          <div class="word-bank">
+            <div class="word-chip used" id="chip-xi" tabindex="0">喜欢 (xǐhuān)</div>
+            <div class="word-chip" id="chip-mi" tabindex="0" onclick="fillBlank('bl2','chip-mi','面条')">面条 (miàntiáo)</div>
+            <div class="word-chip" id="chip-he" tabindex="0" onclick="fillBlank('bl2','chip-he','喝水')">喝水 (hēshuǐ)</div>
+            <div class="word-chip" id="chip-da" tabindex="0" onclick="fillBlank('bl2','chip-da','大')">大 (dà)</div>
+            <div class="word-chip" id="chip-zhu" tabindex="0" onclick="fillBlank('bl2','chip-zhu','住')">住 (zhù)</div>
+          </div>
+          <div class="game-bar">
+            <div class="streak"><i class="fa-solid fa-fire-flame-curved"></i> 5-day streak</div>
+            <div class="xp-pill"><i class="fa-solid fa-bolt"></i> 180 XP</div>
+            <div class="lives"><i class="fa-solid fa-heart heart"></i><i class="fa-solid fa-heart heart"></i><i class="fa-solid fa-heart heart"></i></div>
+          </div>
+        </div>
+        <div class="screen-label">Fill in the Blank · Modern Light</div>
+      </div>
+      <div>
+        <div class="phone phone-portrait">
+          <div class="status-bar"><span><i class="fa-regular fa-clock"></i>&nbsp;09:41</span><span></span></div>
+          <div class="quiz-header">
+            <button class="back-btn"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="progress-bar-wrap"><div class="progress-fill" style="width:80%"></div></div>
+            <span class="q-counter">4 / 5</span>
+          </div>
+          <div class="q-area">
+            <span class="lvl-badge lvl-inter"><i class="fa-solid fa-circle" style="font-size:8px"></i> Intermediate</span>
+            <div class="q-type-tag">Arrange Steps</div>
+            <div class="q-text">Science: Arrange the steps of photosynthesis in correct order</div>
+          </div>
+          <div class="word-bank" style="flex-direction:column; gap:10px;">
+            <div class="opt" tabindex="0" draggable="true"><i class="fa-solid fa-grip-lines" style="color:#bbecfc;margin-right:7px"></i><div><div class="opt-text">① CO₂ + H₂O are absorbed</div></div></div>
+            <div class="opt" tabindex="0" draggable="true"><i class="fa-solid fa-grip-lines" style="color:#bbecfc;margin-right:7px"></i><div><div class="opt-text">② Sunlight activates chlorophyll</div></div></div>
+            <div class="opt correct" tabindex="0" draggable="true"><i class="fa-solid fa-grip-lines" style="color:var(--success);margin-right:7px"></i><div><div class="opt-text" style="color:var(--success)">③ Glucose + O₂ are formed <i class="fa-solid fa-check"></i></div></div></div>
+            <div class="opt" tabindex="0" draggable="true"><i class="fa-solid fa-grip-lines" style="color:#bbecfc;margin-right:7px"></i><div><div class="opt-text">④ Calvin cycle starts</div></div></div>
+          </div>
+          <div class="game-bar">
+            <div class="streak"><i class="fa-solid fa-fire-flame-curved"></i> 5-day streak</div>
+            <div class="xp-pill"><i class="fa-solid fa-bolt"></i> 180 XP</div>
+            <div class="lives"><i class="fa-solid fa-heart heart"></i><i class="fa-solid fa-heart heart"></i><i class="fa-solid fa-heart heart"></i></div>
+          </div>
+        </div>
+        <div class="screen-label">Arrange Steps · Drag to Sort · Light UX</div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content hidden" id="tc3">
+    <div class="screens">
+      <div>
+        <div class="phone phone-portrait">
+          <div class="status-bar"><span><i class="fa-regular fa-clock"></i> 09:41</span><span></span></div>
+          <div class="quiz-header">
+            <button class="back-btn"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="progress-bar-wrap"><div class="progress-fill" style="width:20%;background:#43E77D"></div></div>
+            <span class="q-counter">1 / 5</span>
+          </div>
+          <div class="q-area">
+            <span class="lvl-badge lvl-elem"><i class="fa-solid fa-circle" style="font-size:8px"></i> Elementary</span>
+            <div class="q-type-tag">AUDIO — Tone Matching</div>
+            <div class="q-text">Listen to the audio and recognize the correct character:</div>
+          </div>
+          <div style="padding:8px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:9px">
+            <div class="audio-pill" id="playBtn" tabindex="0" onclick="togglePlay()">
+              <i class="fa-solid fa-play" id="playIcon"></i>
+              <div class="wave"><span></span><span></span><span></span><span></span><span></span></div>
+              <span id="playLabel">Play audio</span>
+            </div>
+            <div style="font-size:12px;color:#bbb">This is the 3rd tone <b>(dipping then rising)</b></div>
+          </div>
+          <div class="opts-v">
+            <div class="opt" tabindex="0" onclick="pickOpt(this,'wrong','opts-audio')"><span class="opt-key" style="font-size:18px">妈</span><div><div class="opt-text">mā — 1st tone</div><div class="opt-sub">High level</div></div></div>
+            <div class="opt" tabindex="0" onclick="pickOpt(this,'wrong','opts-audio')"><span class="opt-key" style="font-size:18px">麻</span><div><div class="opt-text">má — 2nd tone</div><div class="opt-sub">Rising</div></div></div>
+            <div class="opt" tabindex="0" onclick="pickOpt(this,'correct','opts-audio')"><span class="opt-key" style="font-size:18px">马</span><div><div class="opt-text">mǎ — 3rd tone</div><div class="opt-sub">Dip then rise</div></div></div>
+            <div class="opt" tabindex="0" onclick="pickOpt(this,'wrong','opts-audio')"><span class="opt-key" style="font-size:18px">骂</span><div><div class="opt-text">mà — 4th tone</div><div class="opt-sub">Falling sharp</div></div></div>
+          </div>
+        </div>
+        <div class="screen-label">Audio Quiz · Light Theme</div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content hidden" id="tc4">
+    <div class="screens">
+      <div>
+        <div class="phone phone-portrait" style="max-width:390px;margin:0 auto">
+          <div class="status-bar"><span><i class="fa-regular fa-clock"></i>09:41</span><span></span></div>
+          <div class="quiz-header">
+            <button class="back-btn"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="progress-bar-wrap"><div class="progress-fill" style="width:50%"></div></div>
+            <span class="q-counter">3 / 6</span>
+          </div>
+          <div class="q-area">
+            <span class="lvl-badge lvl-elem">Elementary</span>
+            <div class="q-type-tag">Matching Pairs</div>
+            <div class="q-text">Match the Chinese words to their Urdu/English meanings:</div>
+          </div>
+          <div class="match-wrap">
+            <svg width="100%" height="10" viewBox="0 0 300 10" style="margin-bottom:8px">
+              <line x1="0" y1="5" x2="300" y2="5" stroke="#bbecfc" stroke-width="1.2"/>
+            </svg>
+            <div class="match-cols" id="matchGrid">
+              <div class="match-item matched" data-id="a">水 (shuǐ) <i class="fa-solid fa-check"></i></div>
+              <div class="match-item matched" data-id="a">Water — پانی <i class="fa-solid fa-check"></i></div>
+              <div class="match-item sel-left" data-id="b" onclick="matchSel(this)">火 (huǒ)</div>
+              <div class="match-item" data-id="e" onclick="matchSel(this)">Mountain — پہاڑ</div>
+              <div class="match-item" data-id="c" onclick="matchSel(this)">山 (shān)</div>
+              <div class="match-item" data-id="b" onclick="matchSel(this)">Fire — آگ</div>
+              <div class="match-item" data-id="d" onclick="matchSel(this)">人 (rén)</div>
+              <div class="match-item" data-id="c" onclick="matchSel(this)">Earth — زمین</div>
+              <div class="match-item" data-id="e" onclick="matchSel(this)">地 (dì)</div>
+              <div class="match-item" data-id="d" onclick="matchSel(this)">Person — شخص</div>
+            </div>
+            <div style="margin-top:11px;padding:8px 6px;background:#f6fafd;border-radius:8px;font-size:12px;color:#9fa8b2;display:flex;align-items:center;gap:8px">
+              <i class="fa-regular fa-lightbulb" style="color:var(--primary)"></i>
+              Select left first, then match on right
+            </div>
+          </div>
+          <div class="game-bar">
+            <div class="streak"><i class="fa-solid fa-fire-flame-curved"></i> 9-day streak</div>
+            <div class="xp-pill"><i class="fa-solid fa-bolt"></i> 320 XP</div>
+            <div class="lives"><i class="fa-solid fa-heart heart"></i><i class="fa-solid fa-heart heart"></i><i class="fa-solid fa-heart heart"></i></div>
+          </div>
+        </div>
+        <div class="screen-label">Matching Pairs · Light UI</div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content hidden" id="tc5">
+    <div class="screens">
+      <div>
+        <div class="phone phone-portrait" style="max-width:345px;margin:0 auto">
+          <div class="status-bar"><span><i class="fa-regular fa-clock"></i>09:41</span><span></span></div>
+          <div style="padding:18px 12px 8px;border-bottom:1px solid #e4eaf1;">
+            <div style="font-size:19px;font-weight:700;color:var(--primary-dark);">Chinese Quiz</div>
+            <div style="font-size:14px;color:var(--gray);margin-top:2px;font-weight:600">Select your level
+              <i class="fa-regular fa-hand-pointer" style="color:var(--primary);margin-left:5px;"></i>
+            </div>
+          </div>
+          <div class="level-grid">
+            <div class="level-card" tabindex="0" onclick="this.style.background='#b0e6f7'; this.style.color='#193049'">
+              <div class="level-dot" style="background:#e7f7fe"><span style="font-size:18px">🔵</span></div>
+              <div class="level-info">
+                <div class="level-name" style="color:#1976D2">Newbie</div>
+                <div class="level-desc">Basic pinyin, simple words</div>
+              </div>
+              <div style="text-align:right">
+                <div class="level-count">24 quizzes</div>
+                <div style="font-size:11px;color:var(--success);margin-top:1px"><i class="fa-solid fa-check"></i> 8 done</div>
+              </div>
+            </div>
+            <div class="level-card" tabindex="0">
+              <div class="level-dot" style="background:#edffe8"><span style="font-size:18px">🟢</span></div>
+              <div class="level-info">
+                <div class="level-name" style="color:#3ec974">Elementary</div>
+                <div class="level-desc">Short sentences, greetings</div>
+              </div>
+              <div style="text-align:right">
+                <div class="level-count">30 quizzes</div>
+                <div style="font-size:11px;color:var(--gray);">0 done</div>
+              </div>
+            </div>
+            <div class="level-card" tabindex="0">
+              <div class="level-dot" style="background:#fdf7e9"><span style="font-size:18px">🟡</span></div>
+              <div class="level-info">
+                <div class="level-name" style="color:#e9a610">Intermediate</div>
+                <div class="level-desc">Grammar, complex sentences</div>
+              </div>
+              <div style="text-align:right">
+                <div class="level-count">36 quizzes</div>
+                <div style="font-size:11px;color:#e9a610;"><i class="fa-solid fa-lock"></i> Locked</div>
+              </div>
+            </div>
+            <div class="level-card" style="opacity:.75" tabindex="0">
+              <div class="level-dot" style="background:#fdeaea"><span style="font-size:18px">🔴</span></div>
+              <div class="level-info">
+                <div class="level-name" style="color:#e16161">Advanced</div>
+                <div class="level-desc">Native audio, paragraphs</div>
+              </div>
+              <div style="text-align:right">
+                <div class="level-count">40 quizzes</div>
+                <div style="font-size:11px;color:#e16161;"><i class="fa-solid fa-lock"></i> Locked</div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:11px 9px 0;display:flex;align-items:center;">
+            <div class="streak"><i class="fa-solid fa-fire-flame-curved"></i> 7 day streak!</div>
+            <div class="xp-pill" style="margin-left:auto"><i class="fa-solid fa-bolt"></i> 240 XP total</div>
+          </div>
+        </div>
+        <div class="screen-label">Level selection · Modern Light UI</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function showTab(n) {
+  document.querySelectorAll('.tab-content').forEach((el,i) => el.classList.toggle('hidden', i !== n));
+  document.querySelectorAll('.tab').forEach((el,i) => el.classList.toggle('active', i === n));
+}
+function pickOpt(el, type, grp) {
+  const parent = document.getElementById(grp) || el.closest('.opts-v,.opts-grid');
+  if (!parent) return;
+  parent.querySelectorAll('.opt').forEach(o => { o.classList.remove('correct','wrong'); o.style.opacity = '0.35'; o.style.pointerEvents = 'none'; });
+  el.classList.add(type);
+  el.style.opacity = '1';
+  el.style.pointerEvents = 'auto';
+}
+var bl2val = null;
+function fillBlank(blankId, chipId, text) {
+  var blank = document.getElementById(blankId);
+  var chip = document.getElementById(chipId);
+  if (!blank || !chip) return;
+  if (chip.classList.contains('used')) return;
+  if (bl2val) {
+    var old = document.getElementById(bl2val);
+    if (old) old.classList.remove('used');
+  }
+  blank.textContent = text;
+  blank.classList.add('filled');
+  chip.classList.add('used');
+  bl2val = chipId;
+}
+function clearBlank(blankId, chipId) {
+  var blank = document.getElementById(blankId);
+  var chip = document.getElementById(chipId);
+  if (!blank) return;
+  blank.textContent = '_____';
+  blank.classList.remove('filled');
+  if (chip) chip.classList.remove('used');
+  bl2val = null;
+}
+var selLeft = null;
+function matchSel(el) {
+  if (el.classList.contains('matched')) return;
+  var allItems = document.querySelectorAll('#matchGrid .match-item');
+  var col = Array.from(allItems).indexOf(el) % 2;
+  if (col === 0) {
+    allItems.forEach(i => { if (Array.from(allItems).indexOf(i) % 2 === 0) i.classList.remove('sel-left'); });
+    el.classList.add('sel-left');
+    selLeft = el;
+  } else if (selLeft) {
+    if (selLeft.dataset.id === el.dataset.id) {
+      selLeft.classList.remove('sel-left'); selLeft.classList.add('matched'); selLeft.innerHTML += ' <i class="fa-solid fa-check"></i>';
+      el.classList.add('matched'); el.innerHTML += ' <i class="fa-solid fa-check"></i>';
+      selLeft = null;
+    } else {
+      selLeft.classList.remove('sel-left');
+      selLeft = null;
+    }
+  }
+}
+var playing = false;
+function togglePlay() {
+  playing = !playing;
+  document.getElementById('playIcon').className = playing ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+  document.getElementById('playLabel').textContent = playing ? 'Playing...' : 'Play audio';
+  drawWave(playing);
+}
+function drawWave(animated) {
+  var canvas = document.getElementById('waveCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  ctx.clearRect(0,0,w,h);
+  var pts = [];
+  if (animated) {
+    for (var i=0;i<w;i++) {
+      var t = i/w;
+      var y = h/2 + Math.sin(t*Math.PI*6 + Date.now()/300) * (8 + Math.sin(t*Math.PI*2)*14);
+      pts.push([i,y]);
+    }
+  } else {
+    for (var i=0;i<w;i++) {
+      var t = i/w;
+      var dip = t < .5 ? t*.4 : (1-t)*.4;
+      pts.push([i, h*0.15 + h*0.7*(1 - dip*1.5)]);
+    }
+  }
+  ctx.beginPath();
+  ctx.moveTo(pts[0][0], pts[0][1]);
+  for (var i=1;i<pts.length;i++) ctx.lineTo(pts[i][0], pts[i][1]);
+  ctx.strokeStyle = '#1F5893';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  if (animated) requestAnimationFrame(() => { if (playing) drawWave(true); });
+}
+drawWave(false);
+</script>
+</body>
+</html>
+<!-- End of Selection --
